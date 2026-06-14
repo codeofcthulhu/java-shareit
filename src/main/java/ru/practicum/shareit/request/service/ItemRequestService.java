@@ -9,6 +9,7 @@ import ru.practicum.shareit.request.repository.ItemRequestRepository;
 @Service
 @RequiredArgsConstructor
 public class ItemRequestService {
+
     private ItemRequestRepository itemRequestRepository;
 
     public ItemRequest checkIdAndReturnItemRequest(Long id) {

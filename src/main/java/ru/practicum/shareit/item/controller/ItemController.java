@@ -15,7 +15,6 @@ import org.springframework.web.bind.annotation.RestController;
 import ru.practicum.shareit.item.dto.ItemDto;
 import ru.practicum.shareit.item.service.ItemService;
 import ru.practicum.shareit.validation.groups.OnCreate;
-import ru.practicum.shareit.validation.groups.OnPatch;
 
 @RestController
 @RequestMapping("/items")

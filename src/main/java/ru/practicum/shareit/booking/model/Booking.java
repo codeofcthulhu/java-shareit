@@ -9,6 +9,7 @@ import ru.practicum.shareit.user.model.User;
 @Data
 @Builder
 public class Booking {
+
     private Long id;
     private Instant start;
     private Instant end;

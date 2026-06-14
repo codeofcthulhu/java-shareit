@@ -7,6 +7,7 @@ import ru.practicum.shareit.user.model.User;
 @Data
 @Builder
 public class ItemRequestDto {
+
     private String description;
     private User requestor;
 }

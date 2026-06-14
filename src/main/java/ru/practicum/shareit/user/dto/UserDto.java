@@ -10,6 +10,7 @@ import ru.practicum.shareit.validation.groups.OnPatch;
 @Data
 @Builder
 public class UserDto {
+
     private Long id;
     @NotBlank(groups = OnCreate.class, message = "User's name must be specified")
     private String name;

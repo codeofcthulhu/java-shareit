@@ -8,6 +8,7 @@ import ru.practicum.shareit.item.model.Item;
 @Data
 @Builder
 public class BookingDto {
+
     private Instant start;
     private Instant end;
     private Item item;

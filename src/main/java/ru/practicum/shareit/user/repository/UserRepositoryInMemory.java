@@ -11,6 +11,7 @@ import ru.practicum.shareit.user.model.User;
 @Repository
 @RequiredArgsConstructor
 public class UserRepositoryInMemory implements UserRepository {
+
     private Long idCounter = 0L;
     private Map<Long, User> idToUser = new HashMap<>();
 

@@ -20,6 +20,7 @@ import ru.practicum.shareit.validation.groups.OnPatch;
 @RequestMapping(path = "/users")
 @RequiredArgsConstructor
 public class UserController {
+
     private final UserService userService;
 
     @PostMapping

@@ -61,7 +61,9 @@ public class UserServiceImpl implements UserService {
         User user = userRepository.getById(id);
         if (user == null) {
             throw new NotFoundException(String.format("User with id: %d is not found", id));
-        } else return user;
+        } else {
+            return user;
+        }
     }
 
     private void checkUniqueEmail(String email) {
