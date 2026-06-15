@@ -1,5 +1,6 @@
 package ru.practicum.shareit.item.service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
@@ -37,23 +38,27 @@ public class ItemServiceImpl implements ItemService {
 
     @Override
     public List<ItemDto> getAllByUserId(Long userId) {
-        return itemRepository.getAllByUserId(userId).stream().map(ItemMapper::toItemDto).collect(
-                Collectors.toList());
+        return itemRepository.getAllByUserId(userId).stream().map(ItemMapper::toItemDto).collect(Collectors.toList());
     }
 
     @Override
     public List<ItemDto> getBySearchQuery(String text) {
-        return itemRepository.getAll().stream()
-                .filter(item -> (item.getName().toLowerCase().contains(text) || item.getDescription().toLowerCase()
-                        .contains(text))).map(ItemMapper::toItemDto).collect(Collectors.toList());
+        if (text.isBlank()) {
+            return new ArrayList<>();
+        }
+        String textLowerCase = text.toLowerCase();
+        return itemRepository.getAll().stream().filter(item -> (
+                        (item.getName().toLowerCase().contains(textLowerCase) || item.getDescription().toLowerCase()
+                                .contains(textLowerCase)) && (item.getAvailable().equals(true)))).map(ItemMapper::toItemDto)
+                .collect(Collectors.toList());
     }
 
     @Override
-    public ItemDto patch(Long userId, Long itemId, ItemDto itemDto) {
-        if (!itemId.equals(userId)) {
+    public ItemDto patch(Long itemId, Long userId, ItemDto itemDto) {
+        Item item = checkIdAndReturnItem(itemId);
+        if (!item.getOwner().getId().equals(userId)) {
             throw new UnauthorizedAccessException(String.format("User is not an owner of item with id %d", itemId));
         }
-        Item item = checkIdAndReturnItem(itemId);
         String name = itemDto.getName();
         String description = itemDto.getDescription();
         Boolean available = itemDto.getAvailable();

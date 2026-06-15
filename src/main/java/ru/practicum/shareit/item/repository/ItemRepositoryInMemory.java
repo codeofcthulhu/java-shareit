@@ -18,7 +18,8 @@ public class ItemRepositoryInMemory implements ItemRepository {
 
     @Override
     public Item create(Item item) {
-        idToItem.put(++idCounter, item);
+        item.setId(++idCounter);
+        idToItem.put(idCounter, item);
         return item;
     }
 

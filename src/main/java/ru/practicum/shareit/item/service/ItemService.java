@@ -13,6 +13,6 @@ public interface ItemService {
 
     public List<ItemDto> getBySearchQuery(String text);
 
-    public ItemDto patch(Long userId, Long itemId, ItemDto itemDto);
+    public ItemDto patch(Long itemId, Long userId, ItemDto itemDto);
 
 }

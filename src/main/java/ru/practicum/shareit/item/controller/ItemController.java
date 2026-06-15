@@ -39,7 +39,7 @@ public class ItemController {
         return itemService.getAllByUserId(userId);
     }
 
-    @GetMapping("/search?text={text}")
+    @GetMapping("/search")
     public List<ItemDto> getBySearchQuery(@RequestParam("text") String text) {
         return itemService.getBySearchQuery(text);
     }
