@@ -5,14 +5,16 @@ import ru.practicum.shareit.user.model.User;
 
 public interface UserRepository {
 
-    public User create(User user);
+    User create(User user);
 
-    public List<User> getAll();
+    List<User> getAll();
 
-    public User getById(Long id);
+    User getById(Long id);
 
-    public User update(User user);
+    User update(User user);
 
-    public void delete(Long id);
+    void delete(Long id);
+
+    boolean emailExist(String email);
 
 }

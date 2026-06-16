@@ -1,6 +1,6 @@
 package ru.practicum.shareit.item.service;
 
-import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
@@ -25,7 +25,7 @@ public class ItemServiceImpl implements ItemService {
 
     @Override
     public ItemDto create(Long userId, ItemDto itemDto) {
-        User user = userService.checkIdAndReturnUser(userId);
+        User user = userService.getUserOrThrow(userId);
         Item item = ItemMapper.toItem(itemDto);
         item.setOwner(user);
         return ItemMapper.toItemDto(itemRepository.create(item));
@@ -33,7 +33,7 @@ public class ItemServiceImpl implements ItemService {
 
     @Override
     public ItemDto getById(Long itemId) {
-        return ItemMapper.toItemDto(checkIdAndReturnItem(itemId));
+        return ItemMapper.toItemDto(getItemOrThrow(itemId));
     }
 
     @Override
@@ -44,7 +44,7 @@ public class ItemServiceImpl implements ItemService {
     @Override
     public List<ItemDto> getBySearchQuery(String text) {
         if (text.isBlank()) {
-            return new ArrayList<>();
+            return Collections.emptyList();
         }
         String textLowerCase = text.toLowerCase();
         return itemRepository.getAll().stream().filter(item -> (
@@ -55,7 +55,7 @@ public class ItemServiceImpl implements ItemService {
 
     @Override
     public ItemDto patch(Long itemId, Long userId, ItemDto itemDto) {
-        Item item = checkIdAndReturnItem(itemId);
+        Item item = getItemOrThrow(itemId);
         if (!item.getOwner().getId().equals(userId)) {
             throw new UnauthorizedAccessException(String.format("User is not an owner of item with id %d", itemId));
         }
@@ -74,12 +74,13 @@ public class ItemServiceImpl implements ItemService {
         return ItemMapper.toItemDto(itemRepository.update(item));
     }
 
-    public Item checkIdAndReturnItem(Long id) {
+    public Item getItemOrThrow(Long id) {
         Item item = itemRepository.getById(id);
+
         if (item == null) {
             throw new NotFoundException(String.format("Item with id: %d is not found", id));
-        } else {
-            return item;
         }
+
+        return item;
     }
 }

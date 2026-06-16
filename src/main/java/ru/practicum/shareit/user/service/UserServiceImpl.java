@@ -26,19 +26,17 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public List<UserDto> getAll() {
-        return userRepository.getAll().stream()
-                .map(UserMapper::toUserDto)
-                .collect(Collectors.toList());
+        return userRepository.getAll().stream().map(UserMapper::toUserDto).collect(Collectors.toList());
     }
 
     @Override
     public UserDto getById(Long id) {
-        return UserMapper.toUserDto(checkIdAndReturnUser(id));
+        return UserMapper.toUserDto(this.getUserOrThrow(id));
     }
 
     @Override
     public UserDto patch(Long id, UserDto userDto) {
-        User user = checkIdAndReturnUser(id);
+        User user = this.getUserOrThrow(id);
         String name = userDto.getName();
         String email = userDto.getEmail();
         if (name != null) {
@@ -53,23 +51,23 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void delete(Long id) {
-        User user = checkIdAndReturnUser(id);
+        User user = this.getUserOrThrow(id);
         userRepository.delete(id);
     }
 
-    public User checkIdAndReturnUser(Long id) {
+    @Override
+    public User getUserOrThrow(Long id) {
         User user = userRepository.getById(id);
         if (user == null) {
             throw new NotFoundException(String.format("User with id: %d is not found", id));
-        } else {
-            return user;
         }
+        return user;
+
     }
 
     private void checkUniqueEmail(String email) {
-        if (userRepository.getAll().stream()
-                .anyMatch(u -> u.getEmail().equals(email))) {
-            throw new DuplicatedDataException(String.format("User with email: %s has already existed", email));
+        if (userRepository.emailExist(email)) {
+            throw new DuplicatedDataException(String.format("User with email: %s has already exist", email));
         }
     }
 }

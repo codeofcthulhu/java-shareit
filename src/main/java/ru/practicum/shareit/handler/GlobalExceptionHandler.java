@@ -1,5 +1,6 @@
 package ru.practicum.shareit.handler;
 
+import jakarta.validation.ConstraintViolationException;
 import java.util.HashMap;
 import java.util.Map;
 import org.springframework.http.HttpStatus;
@@ -25,6 +26,19 @@ public class GlobalExceptionHandler {
             errors.put(fieldName, errorMessage);
         });
         return errors;
+    }
+
+    @ExceptionHandler(ConstraintViolationException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public ErrorResponse handleConstraintViolationException(
+            ConstraintViolationException e) {
+
+        String message = e.getConstraintViolations().stream()
+                .map(v -> v.getPropertyPath() + ": " + v.getMessage())
+                .findFirst()
+                .orElse(e.getMessage());
+
+        return new ErrorResponse(message);
     }
 
     @ExceptionHandler(NotFoundException.class)

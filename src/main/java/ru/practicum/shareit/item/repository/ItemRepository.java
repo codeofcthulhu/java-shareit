@@ -5,13 +5,13 @@ import ru.practicum.shareit.item.model.Item;
 
 public interface ItemRepository {
 
-    public Item create(Item item);
+    Item create(Item item);
 
-    public Item getById(Long id);
+    Item getById(Long id);
 
-    public List<Item> getAllByUserId(Long userId);
+    List<Item> getAllByUserId(Long userId);
 
-    public List<Item> getAll();
+    List<Item> getAll();
 
-    public Item update(Item item);
+    Item update(Item item);
 }
